@@ -12,7 +12,7 @@
 	url = git://github.com/opscode-cookbooks/php.git
 [submodule "cookbooks/imagemagick"]
 	path = cookbooks/imagemagick
-	url = https://github.com/opscode-cookbooks/imagemagick
+	url = git://github.com/opscode-cookbooks/imagemagick.git
 [submodule "cookbooks/git"]
 	path = cookbooks/git
 	url = git://github.com/opscode-cookbooks/git.git
