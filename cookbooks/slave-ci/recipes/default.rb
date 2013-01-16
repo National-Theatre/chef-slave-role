@@ -44,6 +44,10 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
   end
 end
 
+package "java" do
+  action :install
+end
+
 unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
   remote_file "selenium" do
     path "/tmp/#{node['slave-ci']['selenium_file']}"

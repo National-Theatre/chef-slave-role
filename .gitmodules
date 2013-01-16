@@ -28,3 +28,6 @@
 [submodule "cookbooks/webserver-dev-chef"]
 	path = cookbooks/webserver-dev-chef
 	url = git@github.com:jpd4nt/webserver-dev-chef.git
+[submodule "cookbooks/ark"]
+	path = cookbooks/ark
+	url = git://github.com/opscode-cookbooks/ark.git
