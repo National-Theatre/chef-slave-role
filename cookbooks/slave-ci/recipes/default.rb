@@ -30,3 +30,36 @@ cookbook_file vhost_path do
     mode   "0644"
     notifies :restart, resources(:service => "apache2")
 end
+
+unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
+  remote_file "chrome" do
+    path "/tmp/#{node['slave-ci']['chrome_file']}"
+    source "http://chromedriver.googlecode.com/files/#{node['slave-ci']['chrome_file']}"
+  end
+  bash "unzip-chrome" do
+    code "(cd /tmp; unzip /tmp/#{node['slave-ci']['chrome_file']})"
+  end
+  bash "mv-chrome" do
+    code "(cd /tmp; mv chromedriver /usr/bin/chromedriver)"
+  end
+end
+
+unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
+  remote_file "selenium" do
+    path "/tmp/#{node['slave-ci']['selenium_file']}"
+    source "http://selenium.googlecode.com/files/#{node['slave-ci']['selenium_file']}"
+  end
+  bash "run-selenium" do
+    code "(cd /tmp; java -jar #{node['slave-ci']['selenium_file']})"
+  end
+end
+
+remote_file "slave" do
+  path "/tmp/slave.jar"
+  source "#{node['slave-ci']['jenkins']['host']}:#{node['slave-ci']['jenkins']['port']}/#{node['slave-ci']['jenkins']['prefix']}/#{node['slave-ci']['jenkins']['slave_uri']}"
+end
+
+execute "slave" do
+  command "java -jar /tmp/slave.jar -jnlpUrl #{node['slave-ci']['jenkins']['host']}:#{node['slave-ci']['jenkins']['port']}/#{node['slave-ci']['jenkins']['prefix']}/computer/#{node['slave-ci']['nodename']}/slave-agent.jnlp"
+  user node['slave-ci']['user']
+end

@@ -5,6 +5,7 @@ all_env = [
   "recipe[webserver-dev-chef::default]",
   "recipe[webserver-dev-chef::xdebug]",
   "recipe[webserver-dev-chef::drush]",
+  "recipe[webserver-dev-chef::pear_tools]",
   "recipe[maven::default]",
   "recipe[slave-ci::default]",
 ]
