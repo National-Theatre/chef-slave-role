@@ -25,3 +25,6 @@
 [submodule "cookbooks/mysql"]
 	path = cookbooks/mysql
 	url = git://github.com/opscode-cookbooks/mysql.git
+[submodule "cookbooks/webserver-dev-chef"]
+	path = cookbooks/webserver-dev-chef
+	url = git@github.com:jpd4nt/webserver-dev-chef.git
