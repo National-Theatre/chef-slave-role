@@ -22,5 +22,8 @@ override_attributes(
   "maven" => {
      "version"   => 3,
      "setup_bin" => true
+  },
+  "mysql" => {
+    "server_root_password" => "nationaltheatre"
   }
 ) 

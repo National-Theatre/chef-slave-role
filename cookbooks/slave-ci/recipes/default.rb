@@ -17,9 +17,11 @@ end
 case node['platform_family']
 when "ubuntu"
   vhost_path = '/etc/apache2/sites-available/vhost'
-when "centos"
+when "rhel", "fedora", "centos"
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 when "amazon"
+  vhost_path = '/etc/httpd/conf.d/vhost.conf'
+else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
@@ -53,9 +55,19 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
     path "/tmp/#{node['slave-ci']['selenium_file']}"
     source "http://selenium.googlecode.com/files/#{node['slave-ci']['selenium_file']}"
   end
-  bash "run-selenium" do
-    code "(cd /tmp; java -jar #{node['slave-ci']['selenium_file']})"
-  end
+end
+
+template '/etc/init.d/selenium' do
+  source "selenium.erb"
+  owner  "root"
+  group  "root"
+  mode   "0755"
+  variables()
+end
+
+service "selenium" do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
 end
 
 remote_file "slave" do
@@ -63,7 +75,14 @@ remote_file "slave" do
   source "#{node['slave-ci']['jenkins']['host']}:#{node['slave-ci']['jenkins']['port']}/#{node['slave-ci']['jenkins']['prefix']}/#{node['slave-ci']['jenkins']['slave_uri']}"
 end
 
-execute "slave" do
-  command "java -jar /tmp/slave.jar -jnlpUrl #{node['slave-ci']['jenkins']['host']}:#{node['slave-ci']['jenkins']['port']}/#{node['slave-ci']['jenkins']['prefix']}/computer/#{node['slave-ci']['nodename']}/slave-agent.jnlp"
-  user node['slave-ci']['user']
+template '/etc/init.d/jenkins_slave' do
+  source "jenkins_slave.erb"
+  owner  "root"
+  group  "root"
+  mode   "0755"
+  variables()
+end
+service "jenkins_slave" do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
 end
