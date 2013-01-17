@@ -1,0 +1,42 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:       jenkins_slave
+# Required-Start: $network $syslog
+# Required-Stop:  $network $syslog
+# Default-Start:  3 5
+# Default-Stop:   0 1 2 6
+# Short-Description: Jenkins Slave
+# Description:    Jenkins Slave Server
+### END INIT INFO
+. /etc/rc.d/init.d/functions
+
+java=/usr/bin/java
+masterurl=<%= node['slave-ci']['jenkins']['host'] %>:<%= node['slave-ci']['jenkins']['port'] %>/<%= node['slave-ci']['jenkins']['prefix'] %>/computer/<%= node['slave-ci']['jenkins']['nodename'] %>/slave-agent.jnlp
+pidfile=/var/run/jenkins-slave.pid
+RETVAL=0
+user=<%= node['slave-ci']['user'] %>
+
+case "$1" in
+        start)
+	  echo -n $"Starting Jenkins Slave "
+	  su - ${user} -c '${java} -jar /tmp/slave.jar -jnlpUrl ${masterurl}'
+	  echo $!>${pidfile}
+        ;;
+        stop)
+	  echo -n $"Stopping Jenkins Slave "
+	  killproc -p ${pidfile} ${java}
+	  RETVAL=$?
+	  echo
+	  [ $RETVAL = 0 ] && rm -f ${pidfile}
+	;;
+	status)
+	  status -p ${pidfile} ${java}
+	  RETVAL=$?
+	;;
+	restart)
+	  echo -n "Restarting Jenkins Slave daemon "
+	  $0 stop
+	  $0 start
+	;;
+esac
+exit 0 
