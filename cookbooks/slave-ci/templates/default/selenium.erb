@@ -1,0 +1,32 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: selenium
+# Required-Start: $networks
+# Default-Start:  45
+# Default-Stop: 90
+# Short-Description: starts selenium server
+# Description: Starts selenium ui testing server.
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+PID_FILE=/var/run/selenium.pid
+
+case "$1" in
+    start)
+      java -jar /tmp/<%= node['slave-ci']['selenium_file'] %> &
+      echo $!>$PID_FILE
+    ;;
+    stop)
+      killproc -p $PID_FILE java
+    ;;
+    restart)
+      $0 stop
+      $0 start
+    ;;
+    status)
+      status -p $PID_FILE java
+    ;;
+esac
+exit 0 
