@@ -64,3 +64,7 @@ service "selenium" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
+
+package 'ant' do
+  action :install
+end
