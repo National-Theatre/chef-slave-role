@@ -32,6 +32,13 @@ cookbook_file vhost_path do
     notifies :restart, resources(:service => "apache2")
 end
 
+unless FileTest.exists?("/var/jenkins/workspace/website")
+  web_app "nt_website" do
+    server_name 'cms.nationaltheatre.test.local'
+    docroot "/var/jenkins/workspace/website/drupal"
+  end
+end
+
 unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
   remote_file "chrome" do
     path "/tmp/#{node['slave-ci']['chrome_file']}"
