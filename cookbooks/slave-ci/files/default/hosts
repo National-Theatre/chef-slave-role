@@ -1,3 +1,4 @@
 127.0.0.1   localhost localhost.localdomain
 
 # Add vhost urls below
+127.0.0.1	www.bbpatest.jpd.local
