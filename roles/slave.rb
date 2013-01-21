@@ -23,5 +23,11 @@ override_attributes(
   "maven" => {
      "version"   => 3,
      "setup_bin" => true
+  },
+  "php" => {
+     "directives" => {
+        "memory_limit" => "1G",
+        "date.timezone" => "Europe/London"
+     }
   }
 ) 

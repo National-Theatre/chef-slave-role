@@ -24,12 +24,11 @@ else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
-cookbook_file vhost_path do
-    source "vhost.conf"
-    owner  "root"
-    group  "root"
-    mode   "0644"
-    notifies :restart, resources(:service => "apache2")
+unless FileTest.exists?("/var/jenkins/workspace/bpa")
+  web_app "bpa" do
+    server_name 'www.bpa.test.local'
+    docroot "/var/jenkins/workspace/bpa/drupal"
+  end
 end
 
 unless FileTest.exists?("/var/jenkins/workspace/website")
@@ -56,21 +55,22 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
   remote_file "selenium" do
     path "/tmp/#{node['slave-ci']['selenium_file']}"
     source "http://selenium.googlecode.com/files/#{node['slave-ci']['selenium_file']}"
+    mode   "0444"
   end
 end
 
-template '/etc/init.d/selenium' do
-  source "selenium.erb"
-  owner  "root"
-  group  "root"
-  mode   "0755"
-  variables()
-end
+#template '/etc/init.d/selenium' do
+#  source "selenium.erb"
+#  owner  "root"
+#  group  "root"
+#  mode   "0755"
+#  variables()
+#end
 
-service "selenium" do
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
-end
+#service "selenium" do
+#  supports :status => true, :restart => true
+#  action [ :enable, :start ]
+#end
 
 package 'ant' do
   action :install
