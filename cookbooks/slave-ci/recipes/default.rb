@@ -43,6 +43,15 @@ if FileTest.exists?("/var/jenkins/workspace/website")
   end
 end
 
+if FileTest.exists?("/var/jenkins/workspace/pp")
+  web_app "nt_pp" do
+    server_name 'secure.nationaltheatre.test.local'
+    server_aliases []
+    docroot "/var/jenkins/workspace/pp/drupal/pp/web"
+    allow_override "All"
+  end
+end
+
 unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
   remote_file "chrome" do
     path "/tmp/#{node['slave-ci']['chrome_file']}"
