@@ -32,7 +32,10 @@ override_attributes(
   },
   "mysql" => {
      "tunable" => {
-        "max_allowed_packet" => "100M"
+        "max_allowed_packet" => "100M",
+        "log_warnings" => 2,
+        "net_read_timeout" => 60,
+        "wait_timeout" => 28800
      }
   }
 ) 
