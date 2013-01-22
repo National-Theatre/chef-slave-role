@@ -23,7 +23,18 @@ override_attributes(
      "version"   => 3,
      "setup_bin" => true
   },
+  "php" => {
+     "directives" => {
+        "memory_limit" => "1G",
+        "date.timezone" => "Europe/London"
+     }
+  },
   "mysql" => {
-    "server_root_password" => "nationaltheatre"
+     "tunable" => {
+        "max_allowed_packet" => "100M",
+        "log_warnings" => 2,
+        "net_read_timeout" => 60,
+        "wait_timeout" => 28800
+     }
   }
 ) 

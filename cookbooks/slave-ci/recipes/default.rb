@@ -25,12 +25,22 @@ else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
-cookbook_file vhost_path do
-    source "vhost.conf"
-    owner  "root"
-    group  "root"
-    mode   "0644"
-    notifies :restart, resources(:service => "apache2")
+if FileTest.exists?("/var/jenkins/workspace/bpa")
+  web_app "bpa" do
+    server_name 'www.bpa.test.local'
+    server_aliases []
+    docroot "/var/jenkins/workspace/bpa/drupal"
+    allow_override "All"
+  end
+end
+
+if FileTest.exists?("/var/jenkins/workspace/website")
+  web_app "nt_website" do
+    server_name 'cms.nationaltheatre.test.local'
+    server_aliases []
+    docroot "/var/jenkins/workspace/website/drupal"
+    allow_override "All"
+  end
 end
 
 unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
@@ -54,7 +64,12 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
   remote_file "selenium" do
     path "/tmp/#{node['slave-ci']['selenium_file']}"
     source "http://selenium.googlecode.com/files/#{node['slave-ci']['selenium_file']}"
+    mode   "0444"
   end
+end
+
+package 'xorg-x11-server-Xvfb' do
+  action :install
 end
 
 template '/etc/init.d/selenium' do
@@ -70,19 +85,6 @@ service "selenium" do
   action [ :enable, :start ]
 end
 
-remote_file "slave" do
-  path "/tmp/slave.jar"
-  source "#{node['slave-ci']['jenkins']['host']}:#{node['slave-ci']['jenkins']['port']}/#{node['slave-ci']['jenkins']['prefix']}/#{node['slave-ci']['jenkins']['slave_uri']}"
-end
-
-template '/etc/init.d/jenkins_slave' do
-  source "jenkins_slave.erb"
-  owner  "root"
-  group  "root"
-  mode   "0755"
-  variables()
-end
-service "jenkins_slave" do
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
+package 'ant' do
+  action :install
 end

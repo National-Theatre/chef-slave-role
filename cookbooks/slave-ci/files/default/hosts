@@ -1,3 +1,5 @@
 127.0.0.1   localhost localhost.localdomain
 
 # Add vhost urls below
+127.0.0.1	www.bpa.test.local
+127.0.0.1	cms.nationaltheatre.test.local

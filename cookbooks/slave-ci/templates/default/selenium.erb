@@ -1,19 +1,40 @@
 #!/bin/bash
 ### BEGIN INIT INFO
-# Provides:       selenium
-# Required-Start: $network $syslog
-# Required-Stop:  $network $syslog
-# Default-Start:  3 5
-# Default-Stop:   0 1 2 6
-# Short-Description: Selenium Server
-# Description:    Selenium UI testing Server
+# Provides: selenium
+# Required-Start: $networks
+# Default-Start:  45
+# Default-Stop: 90
+# Short-Description: starts selenium server
+# Description: Starts selenium ui testing server.
 ### END INIT INFO
+
+# Source function library.
 . /etc/rc.d/init.d/functions
 
-java=/usr/bin/java
-selenium=<%= node['slave-ci']['selenium_file'] %>
-pidfile=/var/run/selenium.pid
-RETVAL=0
+PID_FILE=/var/run/selenium.pid
+PID_FILEX=/var/run/selenium_xvfb.pid
+
+case "$1" in
+    start)
+      /usr/bin/Xvfb :3 -ac &
+      echo $!>$PID_FILEX
+      export DISPLAY=:3
+      java -jar /tmp/<%= node['slave-ci']['selenium_file'] %> &
+      echo $!>$PID_FILE
+    ;;
+    stop)
+      killproc -p $PID_FILE java
+      killproc -p $PID_FILEX Xvfb
+    ;;
+    restart)
+      $0 stop
+      $0 start
+    ;;
+    status)
+      status -p $PID_FILE java
+    ;;
+esac
+exit 0 
 
 case "$1" in
         start)
@@ -38,4 +59,4 @@ case "$1" in
 	  $0 start
 	;;
 esac
-exit 0
+exit 0 
