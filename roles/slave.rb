@@ -31,6 +31,7 @@ override_attributes(
   },
   "mysql" => {
      "server_root_password" => "nationaltheatre",
+     "bind_address" => "0.0.0.0",
      "tunable" => {
         "max_allowed_packet" => "100M",
         "log_warnings" => false,
