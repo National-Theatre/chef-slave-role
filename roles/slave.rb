@@ -29,5 +29,10 @@ override_attributes(
         "memory_limit" => "1G",
         "date.timezone" => "Europe/London"
      }
+  },
+  "mysql" => {
+     "tunable" => {
+        "max_allowed_packet" => "100M"
+     }
   }
 ) 
