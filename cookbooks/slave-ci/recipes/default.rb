@@ -56,8 +56,18 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
   end
 end
 
-package "java" do
-  action :install
+unless FileTest.exists?("/tmp/gtk-firefox.sh")
+  cookbook_file "/tmp/gtk-firefox.sh" do
+    source "gtk-firefox.sh"
+    owner  "root"
+    group  "root"
+    mode   "0544"
+  end
+  execute "gtk-firefox.sh" do
+    command "/tmp/gtk-firefox.sh"
+    action :run
+    user "root"
+  end
 end
 
 unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
