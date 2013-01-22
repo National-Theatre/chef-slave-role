@@ -24,17 +24,21 @@ else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
-unless FileTest.exists?("/var/jenkins/workspace/bpa")
+if FileTest.exists?("/var/jenkins/workspace/bpa")
   web_app "bpa" do
     server_name 'www.bpa.test.local'
+    server_aliases []
     docroot "/var/jenkins/workspace/bpa/drupal"
+    allow_override "All"
   end
 end
 
-unless FileTest.exists?("/var/jenkins/workspace/website")
+if FileTest.exists?("/var/jenkins/workspace/website")
   web_app "nt_website" do
     server_name 'cms.nationaltheatre.test.local'
+    server_aliases []
     docroot "/var/jenkins/workspace/website/drupal"
+    allow_override "All"
   end
 end
 
@@ -59,18 +63,22 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
   end
 end
 
-#template '/etc/init.d/selenium' do
-#  source "selenium.erb"
-#  owner  "root"
-#  group  "root"
-#  mode   "0755"
-#  variables()
-#end
+package 'xorg-x11-server-Xvfb' do
+  action :install
+end
 
-#service "selenium" do
-#  supports :status => true, :restart => true
-#  action [ :enable, :start ]
-#end
+template '/etc/init.d/selenium' do
+  source "selenium.erb"
+  owner  "root"
+  group  "root"
+  mode   "0755"
+  variables()
+end
+
+service "selenium" do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
+end
 
 package 'ant' do
   action :install

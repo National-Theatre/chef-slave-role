@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ### BEGIN INIT INFO
 # Provides: selenium
 # Required-Start: $networks
@@ -12,14 +12,19 @@
 . /etc/rc.d/init.d/functions
 
 PID_FILE=/var/run/selenium.pid
+PID_FILEX=/var/run/selenium_xvfb.pid
 
 case "$1" in
     start)
+      /usr/bin/Xvfb :3 -ac &
+      echo $!>$PID_FILEX
+      export DISPLAY=:3
       java -jar /tmp/<%= node['slave-ci']['selenium_file'] %> &
       echo $!>$PID_FILE
     ;;
     stop)
       killproc -p $PID_FILE java
+      killproc -p $PID_FILEX Xvfb
     ;;
     restart)
       $0 stop
