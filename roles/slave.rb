@@ -30,9 +30,10 @@ override_attributes(
      }
   },
   "mysql" => {
+     "server_root_password" => "nationaltheatre",
      "tunable" => {
         "max_allowed_packet" => "100M",
-        "log_warnings" => 2,
+        "log_warnings" => false,
         "net_read_timeout" => 60,
         "wait_timeout" => 28800
      }
