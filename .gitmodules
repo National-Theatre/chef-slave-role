@@ -31,3 +31,6 @@
 [submodule "cookbooks/ark"]
 	path = cookbooks/ark
 	url = git://github.com/opscode-cookbooks/ark.git
+[submodule "cookbooks/runit"]
+	path = cookbooks/runit
+	url = git://github.com/opscode-cookbooks/runit.git
