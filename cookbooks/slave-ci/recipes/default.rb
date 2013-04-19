@@ -63,6 +63,9 @@ unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
   bash "mv-chrome" do
     code "(cd /tmp; mv chromedriver /usr/bin/chromedriver)"
   end
+  bash "set-chrome" do
+    code "chmod 755 /usr/bin/chromedriver"
+  end
 end
 
 unless FileTest.exists?("/tmp/gtk-firefox.sh")
