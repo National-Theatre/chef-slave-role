@@ -34,3 +34,6 @@
 [submodule "cookbooks/runit"]
 	path = cookbooks/runit
 	url = git://github.com/opscode-cookbooks/runit.git
+[submodule "cookbooks/nodejs"]
+	path = cookbooks/nodejs
+	url = git://github.com/mdxp/nodejs-cookbook.git
