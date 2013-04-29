@@ -80,6 +80,11 @@ unless FileTest.exists?("/tmp/gtk-firefox.sh")
     action :run
     user "root"
   end
+  execute "clean_out_src" do
+    command "rm -r /usr/local/src"
+    action :run
+    user "root"
+  end
 end
 
 unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
@@ -109,4 +114,26 @@ end
 
 package 'ant' do
   action :install
+end
+#
+# Install nodeJS for zombieJS
+#
+bash "install_zombie" do
+  code "mkdir -p /usr/local/src"
+end
+case node['platform_family']
+when "ubuntu"
+  include_recipe "nodejs::install_from_package"
+when "rhel", "fedora", "centos", "amazon"
+  include_recipe "nodejs::install_from_binary"
+else
+  include_recipe "nodejs"
+end
+
+bash "install_zombie" do
+  code "npm install zombie --global"
+end
+
+bash "install_qunit" do
+  code "npm install qunit --global"
 end
