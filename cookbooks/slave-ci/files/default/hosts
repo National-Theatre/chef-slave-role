@@ -4,3 +4,6 @@
 127.0.0.1	www.bpa.test.local
 127.0.0.1	cms.nationaltheatre.test.local
 127.0.0.1	secure.nationaltheatre.test.local
+127.0.0.1	www.shed.test.local
+127.0.0.1	www.ntfuture.test.local
+127.0.0.1	www.digrep.test.local

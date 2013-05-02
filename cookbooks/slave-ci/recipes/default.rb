@@ -25,92 +25,9 @@ else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
-if FileTest.exists?("#{node['slave-ci']['jenkins']['workspace']}/bpa")
-  web_app "bpa" do
-    server_name 'www.bpa.test.local'
-    server_aliases []
-    docroot "#{node['slave-ci']['jenkins']['workspace']}/bpa/drupal"
-    allow_override "All"
-  end
-end
+include_recipe "slave-ci::install_vhost"
 
-if FileTest.exists?("#{node['slave-ci']['jenkins']['workspace']}/website")
-  web_app "nt_website" do
-    server_name 'cms.nationaltheatre.test.local'
-    server_aliases []
-    docroot "#{node['slave-ci']['jenkins']['workspace']}/website/drupal"
-    allow_override "All"
-  end
-end
-
-if FileTest.exists?("#{node['slave-ci']['jenkins']['workspace']}/pp")
-  web_app "nt_pp" do
-    server_name 'secure.nationaltheatre.test.local'
-    server_aliases []
-    docroot "#{node['slave-ci']['jenkins']['workspace']}/pp/drupal/pp/web"
-    allow_override "All"
-  end
-end
-
-unless FileTest.exists?("/tmp/#{node['slave-ci']['chrome_file']}")
-  remote_file "chrome" do
-    path "/tmp/#{node['slave-ci']['chrome_file']}"
-    source "http://chromedriver.googlecode.com/files/#{node['slave-ci']['chrome_file']}"
-  end
-  bash "unzip-chrome" do
-    code "(cd /tmp; unzip /tmp/#{node['slave-ci']['chrome_file']})"
-  end
-  bash "mv-chrome" do
-    code "(cd /tmp; mv chromedriver /usr/bin/chromedriver)"
-  end
-  bash "set-chrome" do
-    code "chmod 755 /usr/bin/chromedriver"
-  end
-end
-
-unless FileTest.exists?("/tmp/gtk-firefox.sh")
-  cookbook_file "/tmp/gtk-firefox.sh" do
-    source "gtk-firefox.sh"
-    owner  "root"
-    group  "root"
-    mode   "0544"
-  end
-  execute "gtk-firefox.sh" do
-    command "/tmp/gtk-firefox.sh"
-    action :run
-    user "root"
-  end
-  execute "clean_out_src" do
-    command "rm -r /usr/local/src"
-    action :run
-    user "root"
-  end
-end
-
-unless FileTest.exists?("/tmp/#{node['slave-ci']['selenium_file']}")
-  remote_file "selenium" do
-    path "/tmp/#{node['slave-ci']['selenium_file']}"
-    source "http://selenium.googlecode.com/files/#{node['slave-ci']['selenium_file']}"
-    mode   "0444"
-  end
-end
-
-package 'xorg-x11-server-Xvfb' do
-  action :install
-end
-
-template '/etc/init.d/selenium' do
-  source "selenium.erb"
-  owner  "root"
-  group  "root"
-  mode   "0755"
-  variables()
-end
-
-service "selenium" do
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
-end
+include_recipe "slave-ci::selenium"
 
 package 'ant' do
   action :install
@@ -131,7 +48,7 @@ else
 end
 
 bash "install_zombie" do
-  code "npm install zombie --global"
+  code "npm install zombie@v1.4.1 --global"
 end
 
 bash "install_qunit" do
