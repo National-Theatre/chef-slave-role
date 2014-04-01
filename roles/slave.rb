@@ -1,6 +1,9 @@
 name "ci_slave_webserver"
 description "CI Slave Web server role"
-all_env = [ 
+all_env = [
+  "recipe[slave-ci::mysql]",
+  "recipe[phantomjs::default]",
+  "recipe[yum-epel::default]",
   "role[webserver]",
   "recipe[webserver-dev-chef::default]",
   "recipe[webserver-dev-chef::xdebug]",
@@ -30,7 +33,13 @@ override_attributes(
      }
   },
   "mysql" => {
-     "bind_address" => "0.0.0.0",
+     "bind_address"           => "0.0.0.0",
+     "server_debian_password" => "nationaltheatre",
+     "server_root_password"   => "nationaltheatre",
+     "server_repl_password"   => "repl_password",
+     "remove_anonymous_users" => true,
+     "remove_test_database"   => true,
+     "data_dir"               => "/mnt/mysql",
      "tunable" => {
         "max_allowed_packet" => "100M",
         "log_warnings" => false,
@@ -39,9 +48,7 @@ override_attributes(
      }
   },
   "nodejs" => {
-    "version" => "0.10.5",
-    "checksum" => "1c22bd15cb13b1109610ee256699300ec6999b335f3bc85dc3c0312ec9312cfd",
-    "checksum_linux_x64" => "182b0992401ff04a288b5777e2892f14d912a509a6c15edc7c0daded3a20d3c7",
-    "checksum_linux_x86" => "c8bb5e5be76b837115a6f581ac5719586da51a8168ead2c0f8e13d9977ab06bb",
+    "version" => "0.10.26",
+    "checksum_linux_x64" => "305bf2983c65edea6dd2c9f3669b956251af03523d31cf0a0471504fd5920aac",
   }
 ) 

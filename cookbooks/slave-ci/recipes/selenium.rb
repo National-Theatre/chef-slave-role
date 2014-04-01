@@ -13,14 +13,12 @@ if node['platform'] != 'amazon'
   unless FileTest.exists?("/usr/bin/google-chrome")
     case node['platform_family']
     when "rhel", "fedora", "centos"
-      yum_key "" do
-	url  "https://dl-ssl.google.com/linux/linux_signing_key.pub"
-	action :add
-      end
+      include_recipe "yum::default"
       yum_repository "chrome" do
 	description "google-chrome - 64-bit"
 	key "google-chrome-stable"
 	url "http://dl.google.com/linux/chrome/rpm/stable/x86_64"
+	gpgkey "https://dl-ssl.google.com/linux/linux_signing_key.pub"
 	action :create
       end
       package 'google-chrome-stable' do

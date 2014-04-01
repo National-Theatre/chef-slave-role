@@ -25,9 +25,9 @@ else
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 end
 
-include_recipe "slave-ci::install_vhost"
+include_recipe "slave-ci::install_vhosts"
 
-include_recipe "slave-ci::selenium"
+#include_recipe "slave-ci::selenium"
 
 package 'ant' do
   action :install
@@ -48,7 +48,7 @@ else
 end
 
 bash "install_zombie" do
-  code "npm install zombie@v1.4.1 --global"
+  code "npm install zombie --global"
 end
 
 bash "install_qunit" do
