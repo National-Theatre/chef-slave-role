@@ -37,3 +37,6 @@
 [submodule "cookbooks/nodejs"]
 	path = cookbooks/nodejs
 	url = git://github.com/mdxp/nodejs-cookbook.git
+[submodule "cookbooks/phantomjs"]
+	path = cookbooks/phantomjs
+	url = git://github.com/customink-webops/phantomjs.git
