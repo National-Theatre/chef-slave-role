@@ -118,3 +118,9 @@
 [submodule "cookbooks/xfs"]
 	path = cookbooks/xfs
 	url = git://github.com/opscode-cookbooks/xfs.git
+[submodule "cookbooks/mysql-chef_gem"]
+	path = cookbooks/mysql-chef_gem
+	url = git://github.com/opscode-cookbooks/mysql-chef_gem.git
+[submodule "cookbooks/homebrew"]
+	path = cookbooks/homebrew
+	url = git://github.com/opscode-cookbooks/homebrew.git
