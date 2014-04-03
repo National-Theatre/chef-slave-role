@@ -20,3 +20,17 @@ env_run_lists(
 	#"dev" => all_env + ["recipe[php:module_xdebug]"],
 	"dev" => all_env,
 )
+
+override_attributes(
+  "php" => {
+     "directives" => {
+        "date.timezone" => "Europe/London"
+     }
+  },
+  "newrelic" => {
+    "application_monitoring" => {
+      "enabled"        => true,
+      "capture_params" => true,
+    }
+  }
+)
