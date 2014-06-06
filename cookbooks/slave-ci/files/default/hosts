@@ -1,5 +1,7 @@
 127.0.0.1   localhost localhost.localdomain
 
+10.58.191.62	ci.ntstaging.org
+
 # Add vhost urls below
 127.0.0.1	www.bpa.test.local
 127.0.0.1	cms.nationaltheatre.test.local
