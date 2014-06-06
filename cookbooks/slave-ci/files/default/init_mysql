@@ -5,6 +5,6 @@ case "$1" in
         /etc/init.d/mysqld start
         /usr/bin/mysql -u root < /etc/mysql_grants.sql
         /usr/bin/mysqladmin -u root password nationaltheatre
-	/user/bin/mysql -u root -pnationaltheatre -e "GRANT ALL ON \`drupal\_%\`.* TO 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
+	/usr/bin/mysql -u root -pnationaltheatre -e "GRANT ALL ON \`drupal\_%\`.* TO 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
 	;;
 esac
