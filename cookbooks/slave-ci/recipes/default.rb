@@ -35,6 +35,11 @@ include_recipe "slave-ci::install_vhosts"
 package 'ant' do
   action :install
 end
+
+package 'memcached' do
+  action :install
+end
+
 #
 # Install nodeJS for zombieJS
 #
