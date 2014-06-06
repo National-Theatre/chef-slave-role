@@ -1,0 +1,10 @@
+#!/bin/bash
+case "$1" in
+  start)
+        /usr/bin/mysql_install_db
+        /etc/init.d/mysqld start
+        /usr/bin/mysql -u root < /etc/mysql_grants.sql
+        /usr/bin/mysqladmin -u root password nationaltheatre
+	/user/bin/mysql -u root -pnationaltheatre -e "GRANT ALL ON \`drupal\_%\`.* TO 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
+	;;
+esac
