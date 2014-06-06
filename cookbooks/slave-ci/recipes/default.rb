@@ -19,6 +19,9 @@ when "ubuntu"
   vhost_path = '/etc/apache2/sites-available/vhost'
 when "rhel", "fedora", "centos"
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
+  package 'java-1.7.0-openjdk' do
+    action :install
+  end
 when "amazon"
   vhost_path = '/etc/httpd/conf.d/vhost.conf'
 else
