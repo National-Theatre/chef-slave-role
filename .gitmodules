@@ -127,3 +127,6 @@
 [submodule "cookbooks/dmg"]
 	path = cookbooks/dmg
 	url = git://github.com/opscode-cookbooks/dmg.git
+[submodule "cookbooks/7-zip"]
+	path = cookbooks/7-zip
+	url = git://github.com/sneal/7-zip.git

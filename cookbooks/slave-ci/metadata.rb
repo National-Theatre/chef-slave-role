@@ -1,3 +1,4 @@
+name             "slave-ci"
 maintainer       "National Theatre"
 maintainer_email "jdrawneek@nationaltheatre.org.uk"
 license          "All rights reserved"
