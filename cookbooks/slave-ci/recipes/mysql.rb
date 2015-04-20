@@ -15,7 +15,7 @@ mount "/media/mysql" do
   pass     0
   fstype   "tmpfs"
   device   "tmpfs"
-  options  "size=500m"
+  options  "size=750m"
   action   [:mount, :enable]
 end
 execute "Create_tmpfs" do
