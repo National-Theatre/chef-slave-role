@@ -25,11 +25,14 @@ execute "Create_tmpfs" do
 end
 
 cookbook_file "/etc/init.d/init_mysql" do
-    source "hosts"
+    source "init_mysql"
     owner  "root"
     group  "root"
     mode   "0755"
 end
+
+include_recipe "mysql::server"
+include_recipe "mysql::client"
 
 link "/etc/rc2.d/S11init_mysql" do
   action :create
