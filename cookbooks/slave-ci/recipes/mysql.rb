@@ -34,6 +34,13 @@ end
 include_recipe "mysql::server"
 include_recipe "mysql::client"
 
+cookbook_file "/etc/mysql/conf.d/hacks.cnf" do
+    source "hacks.cnf"
+    owner  "root"
+    group  "root"
+    mode   "0755"
+end
+
 link "/etc/rc2.d/S11init_mysql" do
   action :create
   to "/etc/init.d/init_mysql"
